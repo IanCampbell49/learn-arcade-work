@@ -91,8 +91,6 @@ on_draw.refraction_slider_x = 400
 on_draw.name_slider_x = 0
 
 
-
-
 def main():
     arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Drawing with Functions")
     arcade.set_background_color(arcade.color.BLACK)
