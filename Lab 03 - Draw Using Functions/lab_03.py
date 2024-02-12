@@ -100,6 +100,5 @@ def main():
     arcade.run()
 
 
-
 # Call the main function to get the program started.
 main()
