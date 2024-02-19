@@ -3,7 +3,6 @@ import random
 
 def main():
 
-    miles_traveled = 0
     miles = 0
     thirst = 0
     camel_tiredness = 0
@@ -78,7 +77,6 @@ def main():
         if thirst > 5:
             done = True
             print('You have died of thirst')
-
 
         if camel_tiredness > 4:
             print('Your camel is getting tired')
