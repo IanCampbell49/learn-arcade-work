@@ -90,6 +90,7 @@ def main():
             print('The natives have caught you!')
             done = True
 
+
         if miles > 199:
             if native_travel_distance > 0:
                 if camel_tiredness < 8:
