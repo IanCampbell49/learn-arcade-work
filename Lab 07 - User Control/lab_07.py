@@ -15,8 +15,12 @@ class Sun:
         self.radius = radius
         self.color = color
 
+        self.rooster_sound = arcade.load_sound('Rooster.wav')
+        self.rooster_sound_player = None
+
+
     def draw(self):
-        """ Draw the suns with the instance variables we have. """
+
         """ Sun """
         arcade.draw_circle_filled(self.position_x,
                                   self.position_y,
@@ -29,6 +33,13 @@ class Sun:
                                     self.position_x - (self.radius + 10),
                                     self.position_y - (self.radius - 12),
                                     self.color)
+        arcade.draw_triangle_filled(self.position_x,
+                                    self.position_y - (self.radius + 20),
+                                    self.position_x + (self.radius + 10),
+                                    self.position_y + (self.radius - 12),
+                                    self.position_x - (self.radius + 10),
+                                    self.position_y + (self.radius - 12),
+                                    self.color)
 
     def update(self):
         # Move the sun
@@ -38,15 +49,23 @@ class Sun:
         # See if the sun hit the edge of the screen. If so, change direction
         if self.position_x < self.radius:
             self.position_x = self.radius
+            if not self.rooster_sound_player or not self.rooster_sound_player.playing:
+                self.rooster_sound_player = arcade.play_sound(self.rooster_sound)
 
         if self.position_x > SCREEN_WIDTH - self.radius:
             self.position_x = SCREEN_WIDTH - self.radius
+            if not self.rooster_sound_player or not self.rooster_sound_player.playing:
+                self.rooster_sound_player = arcade.play_sound(self.rooster_sound)
 
         if self.position_y < self.radius:
             self.position_y = self.radius
+            if not self.rooster_sound_player or not self.rooster_sound_player.playing:
+                self.rooster_sound_player = arcade.play_sound(self.rooster_sound)
 
         if self.position_y > SCREEN_HEIGHT - self.radius:
             self.position_y = SCREEN_HEIGHT - self.radius
+            if not self.rooster_sound_player or not self.rooster_sound_player.playing:
+                self.rooster_sound_player = arcade.play_sound(self.rooster_sound)
 
 
 class Moon:
@@ -60,21 +79,35 @@ class Moon:
         self.color = color
 
     def draw(self):
-        """ Draw the suns with the instance variables we have. """
-        """ Sun """
+
+        """ Moon """
         arcade.draw_circle_filled(self.position_x,
                                   self.position_y,
                                   self.radius, self.
                                   color)
+        arcade.draw_circle_filled(self.position_x + 15,
+                                  self.position_y - 20,
+                                  10,
+                                  arcade.color.SLATE_GRAY)
+        arcade.draw_circle_filled(self.position_x - 15,
+                                  self.position_y + 20,
+                                  15,
+                                  arcade.color.SLATE_GRAY)
+        arcade.draw_circle_filled(self.position_x - 15,
+                                  self.position_y - 20,
+                                  5,
+                                  arcade.color.SLATE_GRAY)
 
     def update(self):
+
         # Move the sun
         self.position_y += self.change_y
         self.position_x += self.change_x
 
-        # See if the sun hit the edge of the screen. If so, change direction
+        # See if the sun hits the edge of the screen. If so, change direction
         if self.position_x < self.radius:
             self.position_x = self.radius
+
 
         if self.position_x > SCREEN_WIDTH - self.radius:
             self.position_x = SCREEN_WIDTH - self.radius
@@ -93,24 +126,28 @@ class MyGame(arcade.Window):
         # Call the parent class's init function
         super().__init__(width, height, title)
 
-        self.rooster_sound = arcade.load_sound('Rooster.wav')
+        # Rooster.wav
+        self.rooster_sound = arcade.load_sound('rooster.wav')
         self.rooster_sound_player = None
-
         # Make the mouse disappear when it is over the window.
-        # So we just see our object, not the pointer.
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(arcade.color.BLUE)
+        arcade.set_background_color(arcade.color.BABY_BLUE)
 
         # Create our sun
         self.sun = Sun(50, 50, 0, 0, 60, arcade.color.YELLOW)
         self.moon = Moon(50, 50, 0, 0, 60, arcade.color.LIGHT_GRAY)
 
+
+
+
+
     def on_draw(self):
-        """ Called whenever we need to draw the window. """
+        # Start render
         arcade.start_render()
         self.sun.draw()
         self.moon.draw()
+        # Hill
         arcade.draw_circle_filled(400, -1500, 1800, arcade.color.LIGHT_GREEN)
 
     def update(self, delta_time):
@@ -118,7 +155,7 @@ class MyGame(arcade.Window):
         self.moon.update()
 
     def on_key_press(self, key, modifiers):
-        """ Called whenever the user presses a key. """
+
         # Sun is controlled with Arrow keys
         if key == arcade.key.LEFT:
             self.sun.change_x = -MOVEMENT_SPEED
@@ -126,39 +163,29 @@ class MyGame(arcade.Window):
             self.sun.change_x = MOVEMENT_SPEED
         elif key == arcade.key.UP:
             self.sun.change_y = MOVEMENT_SPEED
-            if not self.rooster_sound_player or not self.rooster_sound_player_playing:
-                self.rooster_sound_player = arcade.play_sound(self.roster_sound)
         elif key == arcade.key.DOWN:
             self.sun.change_y = -MOVEMENT_SPEED
 
-        # Moon is Controlled with W, A, S, D
-        if key == arcade.key.A:
-            self.moon.change_x = -MOVEMENT_SPEED
-        elif key == arcade.key.D:
-            self.moon.change_x = MOVEMENT_SPEED
-        elif key == arcade.key.W:
-            self.moon.change_y = MOVEMENT_SPEED
-        elif key == arcade.key.S:
-            self.moon.change_y = -MOVEMENT_SPEED
-
-
-
     def on_key_release(self, key, modifiers):
-        """ Called whenever a user releases a key. """
+
         # Sun release
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.sun.change_x = 0
         elif key == arcade.key.UP or key == arcade.key.DOWN:
             self.sun.change_y = 0
-        # Moon release
-        if key == arcade.key.A or key == arcade.key.D:
-            self.moon.change_x = 0
-        elif key == arcade.key.W or key == arcade.key.S:
-            self.moon.change_y = 0
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.moon.position_x = x
+        self.moon.position_y = y
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            if not self.wolf_sound_player or not self.wolf_sound_player.playing:
+                self.wolf_sound_player = arcade.play_sound(self.wolf_sound)
 
 
 def main():
-    window = MyGame(800, 600, "Drawing Example")
+    window = MyGame(800, 600, "Lab 07")
     arcade.run()
 
 
