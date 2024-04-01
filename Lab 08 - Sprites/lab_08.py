@@ -120,10 +120,6 @@ class MyGame(arcade.Window):
                 self.boom_sound_player = arcade.play_sound(self.boom_sound)
 
 
-
-
-
-
 def main():
     """ Main function """
     window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, 'Arcade lab 8')
